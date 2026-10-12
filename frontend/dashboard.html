@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AI CareerMate</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --background: #f5f7fb;
+            --text: #172033;
+            --muted: #64748b;
+            --border: #e5eaf2;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .navbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .container {
+            width: 88%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .welcome h1 {
+            font-size: clamp(25px, 4vw, 34px);
+            margin-bottom: 6px;
+            letter-spacing: -0.8px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .date-label {
+            color: var(--muted);
+            font-size: 13px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 9px 14px;
+            border-radius: 10px;
+        }
+
+        .section-heading {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 23px;
+            min-width: 0;
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-size: 21px;
+            background: #eff6ff;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 7px;
+        }
+
+        .stat-note {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            min-width: 0;
+        }
+
+        .panel h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .panel-description {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 23px;
+        }
+
+        .progress-item {
+            margin-bottom: 22px;
+        }
+
+        .progress-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .progress-info strong {
+            font-weight: 700;
+        }
+
+        .progress-info span {
+            color: var(--muted);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 9px;
+            background: #e9eef6;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 20px;
+            background: var(--primary);
+            transition: width 0.5s ease;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin: 17px 0 20px;
+        }
+
+        .skill-tag {
+            padding: 6px 11px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-message {
+            color: var(--muted);
+            font-size: 13px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 16px 0;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .action-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 23px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #93b4ff;
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #eff6ff;
+            font-size: 23px;
+            margin-bottom: 15px;
+        }
+
+        .action-card h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .action-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .action-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .notice {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            border-radius: 12px;
+            padding: 16px 18px;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: var(--muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            background: var(--white);
+        }
+
+        @media (max-width: 850px) {
+
+            .stats-grid,
+            .action-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 25px auto;
+            }
+
+            .stats-grid,
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card,
+            .panel,
+            .action-card {
+                padding: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">AI CareerMate</a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="resume.html">Resume</a>
+            <a href="job-match.html">Job Match</a>
+            <a href="interview.html">Mock Interview</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <div>
+                <h1>Your Career Dashboard</h1>
+                <p>Track your preparation and take the next step toward your career.</p>
+            </div>
+
+            <div class="date-label" id="currentDate">Loading date...</div>
+        </section>
+
+        <h2 class="section-heading">Your Overview</h2>
+
+        <section class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Resume Analysis</span>
+                    <span class="stat-icon">📄</span>
+                </div>
+                <div class="stat-value" id="resumeStatus">Not started</div>
+                <p class="stat-note" id="resumeNote">Analyze your resume to begin.</p>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Job Match</span>
+                    <span class="stat-icon">🎯</span>
+                </div>
+                <div class="stat-value" id="jobMatchValue">Not started</div>
+                <p class="stat-note" id="jobMatchNote">Compare your skills with a job.</p>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Mock Interview</span>
+                    <span class="stat-icon">💬</span>
+                </div>
+                <div class="stat-value" id="interviewStatus">Not started</div>
+                <p class="stat-note" id="interviewNote">Practice interview questions.</p>
+            </article>
+
+        </section>
+
+        <section class="content-grid">
+
+            <article class="panel">
+                <h2>Career Preparation</h2>
+                <p class="panel-description">
+                    Your feature progress, based on results saved in this browser.
+                </p>
+
+                <div class="progress-item">
+                    <div class="progress-info">
+                        <strong>Resume Analysis</strong>
+                        <span id="resumeProgressLabel">Not completed</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="resumeProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-info">
+                        <strong>Job Matching</strong>
+                        <span id="jobProgressLabel">Not completed</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="jobProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-info">
+                        <strong>Interview Practice</strong>
+                        <span id="interviewProgressLabel">Not completed</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="interviewProgress"></div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2>Detected Resume Skills</h2>
+                <p class="panel-description">
+                    Skills detected during your latest resume analysis.
+                </p>
+
+                <div id="skillsContainer">
+                    <div class="empty-message">
+                        No resume skills found yet. Upload and analyze a PDF resume first.
+                    </div>
+                </div>
+
+                <a href="resume.html" class="action-link">
+                    Analyze Resume <span>→</span>
+                </a>
+            </article>
+
+        </section>
+
+        <h2 class="section-heading">Continue Your Journey</h2>
+
+        <section class="action-grid">
+
+            <article class="action-card">
+                <div class="action-icon">📄</div>
+                <h3>Resume Analysis</h3>
+                <p>
+                    Upload your resume, review detected skills, and see suggestions
+                    for improving its completeness.
+                </p>
+                <a href="resume.html" class="action-link">
+                    Analyze Resume <span>→</span>
+                </a>
+            </article>
+
+            <article class="action-card">
+                <div class="action-icon">🎯</div>
+                <h3>Job Match</h3>
+                <p>
+                    Compare your resume skills with a job description and identify
+                    skills you may need to develop.
+                </p>
+                <a href="job-match.html" class="action-link">
+                    Check Job Match <span>→</span>
+                </a>
+            </article>
+
+            <article class="action-card">
+                <div class="action-icon">💬</div>
+                <h3>Mock Interview</h3>
+                <p>
+                    Practice role-based interview questions and review the feedback
+                    generated by the practice system.
+                </p>
+                <a href="interview.html" class="action-link">
+                    Start Practicing <span>→</span>
+                </a>
+            </article>
+
+        </section>
+
+        <div class="notice">
+            <strong>Note:</strong> Dashboard progress is based on results saved in this
+            browser. If you clear browser data or use another browser, some results
+            may not appear here. Interview feedback is practice feedback, not a
+            professional assessment.
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        © <span id="currentYear"></span> AI CareerMate. Analyze. Improve. Prepare. Succeed.
+    </footer>
+
+    <script>
+        // Display today's date and the current year.
+        const today = new Date();
+
+        document.getElementById("currentDate").textContent =
+            today.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+
+        document.getElementById("currentYear").textContent =
+            today.getFullYear();
+
+        // Read saved values safely from this browser.
+        function readSavedValue(key) {
+            try {
+                return sessionStorage.getItem(key) ||
+                    localStorage.getItem(key);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function readSavedJSON(key) {
+            const value = readSavedValue(key);
+
+            if (!value) {
+                return null;
+            }
+
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function setProgress(elementId, labelId, percentage, label) {
+            const safePercentage = Math.max(
+                0,
+                Math.min(100, Number(percentage) || 0)
+            );
+
+            document.getElementById(elementId).style.width =
+                safePercentage + "%";
+
+            document.getElementById(labelId).textContent = label;
+        }
+
+        // Resume: script.js currently saves detected skills in sessionStorage.
+        const savedSkills = readSavedValue("careerMateResumeSkills");
+        const skillsContainer = document.getElementById("skillsContainer");
+
+        if (savedSkills) {
+            const skills = savedSkills
+                .split(",")
+                .map(skill => skill.trim())
+                .filter(Boolean);
+
+            if (skills.length > 0) {
+                document.getElementById("resumeStatus").textContent = "Analyzed";
+                document.getElementById("resumeNote").textContent =
+                    skills.length + " detected skill(s) saved.";
+
+                setProgress(
+                    "resumeProgress",
+                    "resumeProgressLabel",
+                    100,
+                    "Analysis completed"
+                );
+
+                skillsContainer.replaceChildren();
+
+                const skillList = document.createElement("div");
+                skillList.className = "skill-list";
+
+                skills.forEach(skill => {
+                    const tag = document.createElement("span");
+                    tag.className = "skill-tag";
+                    tag.textContent = skill;
+                    skillList.appendChild(tag);
+                });
+
+                skillsContainer.appendChild(skillList);
+            }
+        }
+
+        // Job Match: show a result only if a previous page has saved one.
+        // The current job-match page may not save this value yet.
+        const savedMatch = readSavedValue("careerMateMatchPercentage");
+
+        if (savedMatch !== null) {
+            const percentage = Number(savedMatch);
+
+            if (Number.isFinite(percentage) && percentage >= 0 && percentage <= 100) {
+                document.getElementById("jobMatchValue").textContent =
+                    percentage + "%";
+
+                document.getElementById("jobMatchNote").textContent =
+                    "Latest saved job match result.";
+
+                setProgress(
+                    "jobProgress",
+                    "jobProgressLabel",
+                    percentage,
+                    percentage + "% match"
+                );
+            }
+        }
+
+        // Mock Interview: show a result only if a previous page has saved one.
+        // The current interview page may not save its summary yet.
+        const savedInterview = readSavedJSON("careerMateInterviewSummary");
+
+        if (savedInterview && typeof savedInterview === "object") {
+            const completed = Number(savedInterview.completedQuestions);
+            const total = Number(savedInterview.totalQuestions);
+
+            if (
+                Number.isFinite(completed) &&
+                Number.isFinite(total) &&
+                total > 0 &&
+                completed >= 0
+            ) {
+                const safeCompleted = Math.min(completed, total);
+                const percentage = Math.round(safeCompleted / total * 100);
+
+                document.getElementById("interviewStatus").textContent =
+                    safeCompleted + "/" + total;
+
+                document.getElementById("interviewNote").textContent =
+                    "Questions completed in the latest session.";
+
+                setProgress(
+                    "interviewProgress",
+                    "interviewProgressLabel",
+                    percentage,
+                    percentage + "% completed"
+                );
+            }
+        }
+    </script>
+
+</body>
+
+</html>

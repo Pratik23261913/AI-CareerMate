@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI CareerMate | Job Match Analysis</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fc;
+            color: #172554;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            color: #2563eb;
+            font-size: 23px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: #334155;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .heading h1 {
+            font-size: clamp(28px, 4vw, 38px);
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        .form-card,
+        .result-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .form-card h2 {
+            font-size: 21px;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hint {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #fff;
+            color: #172554;
+            font: inherit;
+            font-size: 15px;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid #bfdbfe;
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        #jobDescription {
+            min-height: 190px;
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 15px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+        }
+
+        .primary-button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 16px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .status.error {
+            color: #b91c1c;
+            background: #fef2f2;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .status.success {
+            color: #166534;
+        }
+
+        .result-card[hidden] {
+            display: none;
+        }
+
+        .result-header {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-header h2 {
+            margin-bottom: 18px;
+        }
+
+        .score-circle {
+            width: 145px;
+            height: 145px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #eff6ff;
+            border: 9px solid #bfdbfe;
+        }
+
+        .score-number {
+            font-size: 34px;
+            font-weight: 800;
+            color: #1d4ed8;
+            line-height: 1.2;
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .result-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .skill-panel {
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .skill-panel h3 {
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+
+        .skill-panel ul,
+        #recommendations {
+            padding-left: 20px;
+        }
+
+        .skill-panel li,
+        #recommendations li {
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .matched h3 {
+            color: #15803d;
+        }
+
+        .missing h3 {
+            color: #b45309;
+        }
+
+        .recommendations {
+            margin-top: 25px;
+            padding: 20px;
+            background: #eff6ff;
+            border-radius: 12px;
+        }
+
+        .recommendations h3 {
+            margin-bottom: 12px;
+        }
+
+        .disclaimer {
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 28px;
+        }
+
+        .step {
+            background: white;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+        }
+
+        .step strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .form-card,
+            .result-card {
+                padding: 20px;
+            }
+
+            .result-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI CareerMate</a>
+        <a href="index.html" class="back-link">← Home</a>
+    </nav>
+
+    <main class="container">
+
+        <header class="heading">
+            <span class="badge">CAREER MATCHING</span>
+            <h1>Find Your Job Match</h1>
+            <p>Compare your skills with a job description and identify areas to improve.</p>
+        </header>
+
+        <section class="form-card">
+            <h2>Enter Your Job Details</h2>
+
+            <form id="jobMatchForm">
+
+                <div class="form-group">
+                    <label for="jobTitle">Target Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="e.g. Python Backend Developer" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="resumeSkills">
+                        Your Resume Skills
+                        <span class="hint">Separate skills with commas.</span>
+                    </label>
+
+                    <textarea id="resumeSkills" placeholder="e.g. Python, SQL, HTML, CSS, FastAPI" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDescription">Job Description</label>
+
+                    <textarea id="jobDescription"
+                        placeholder="Paste the job description here, including required skills..." required></textarea>
+                </div>
+
+                <button type="submit" class="primary-button" id="analyzeButton">
+                    Analyze Job Match →
+                </button>
+
+                <p id="statusMessage" class="status" aria-live="polite"></p>
+
+            </form>
+        </section>
+
+        <section class="result-card" id="results" hidden>
+
+            <div class="result-header">
+                <h2>Your Job Match Results</h2>
+
+                <div class="score-circle">
+                    <span class="score-number" id="matchPercentage">0%</span>
+                    <span class="score-label">Skills Match</span>
+                </div>
+
+                <p id="matchSummary"></p>
+            </div>
+
+            <div class="result-grid">
+
+                <div class="skill-panel matched">
+                    <h3>✓ Matched Skills</h3>
+                    <ul id="matchedSkills"></ul>
+                </div>
+
+                <div class="skill-panel missing">
+                    <h3>＋ Skills to Develop</h3>
+                    <ul id="missingSkills"></ul>
+                </div>
+
+            </div>
+
+            <div class="recommendations">
+                <h3>💡 Recommendations</h3>
+                <ul id="recommendations"></ul>
+            </div>
+
+            <p class="disclaimer">
+                This result is based on the skills detected by the current
+                rule-based analysis. It is an estimate, not a guarantee of
+                interview selection or employment.
+            </p>
+
+        </section>
+
+        <section class="steps">
+            <article class="step">
+                <strong>1. Add your skills</strong>
+                <p>Enter your current technical skills.</p>
+            </article>
+
+            <article class="step">
+                <strong>2. Compare requirements</strong>
+                <p>Provide the job title and job description.</p>
+            </article>
+
+            <article class="step">
+                <strong>3. Plan your learning</strong>
+                <p>Use missing skills to guide your preparation.</p>
+            </article>
+        </section>
+
+    </main>
+
+    <footer>
+        © <span id="year"></span> AI CareerMate · Analyze. Improve. Prepare. Succeed.
+    </footer>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000/job-match";
+
+        const form = document.getElementById("jobMatchForm");
+        const jobTitleInput = document.getElementById("jobTitle");
+        const resumeSkillsInput = document.getElementById("resumeSkills");
+        const jobDescriptionInput = document.getElementById("jobDescription");
+        const analyzeButton = document.getElementById("analyzeButton");
+        const statusMessage = document.getElementById("statusMessage");
+        const results = document.getElementById("results");
+
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+        // Restore skills saved by the Resume Analysis page.
+        try {
+            const savedSkills = sessionStorage.getItem("careerMateResumeSkills");
+
+            if (savedSkills) {
+                resumeSkillsInput.value = savedSkills;
+            }
+        } catch (error) {
+            console.warn("Could not restore saved resume skills.");
+        }
+
+        function showList(elementId, items, emptyMessage) {
+            const list = document.getElementById(elementId);
+            list.replaceChildren();
+
+            if (!Array.isArray(items) || items.length === 0) {
+                const li = document.createElement("li");
+                li.textContent = emptyMessage;
+                list.appendChild(li);
+                return;
+            }
+
+            items.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = String(item);
+                list.appendChild(li);
+            });
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const jobTitle = jobTitleInput.value.trim();
+            const resumeSkills = resumeSkillsInput.value.trim();
+            const jobDescription = jobDescriptionInput.value.trim();
+
+            if (!jobTitle || !resumeSkills || !jobDescription) {
+                statusMessage.textContent = "Please complete all fields.";
+                statusMessage.className = "status error";
+                return;
+            }
+
+            analyzeButton.disabled = true;
+            analyzeButton.textContent = "Analyzing...";
+            statusMessage.textContent = "Comparing your skills with the job requirements...";
+            statusMessage.className = "status";
+            results.hidden = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        resume_skills: resumeSkills,
+                        job_description:
+                            "Job Title: " + jobTitle + "\n\n" + jobDescription
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.detail || "The server could not analyze this job match."
+                    );
+                }
+
+                const percentage = Number(data.match_percentage);
+
+                if (!Number.isFinite(percentage)) {
+                    throw new Error("The server returned an invalid match percentage.");
+                }
+
+                document.getElementById("matchPercentage").textContent =
+                    Math.max(0, Math.min(100, percentage)) + "%";
+
+                const matchedCount = Number(data.matched_skills_count) || 0;
+                const requiredCount = Number(data.total_required_skills) || 0;
+
+                document.getElementById("matchSummary").textContent =
+                    "You matched " + matchedCount + " out of " +
+                    requiredCount + " identified job skills for " + jobTitle + ".";
+
+                showList(
+                    "matchedSkills",
+                    data.matched_skills,
+                    "No matching skills were identified."
+                );
+
+                showList(
+                    "missingSkills",
+                    data.missing_skills,
+                    "No missing skills were identified."
+                );
+
+                showList(
+                    "recommendations",
+                    data.recommendations,
+                    "Keep practicing and improving your technical skills."
+                );
+
+                results.hidden = false;
+                statusMessage.textContent = "Analysis completed successfully.";
+                statusMessage.className = "status success";
+
+                results.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            } catch (error) {
+                statusMessage.textContent =
+                    "Analysis failed: " + error.message +
+                    " Check that your FastAPI backend is running.";
+                statusMessage.className = "status error";
+
+            } finally {
+                analyzeButton.disabled = false;
+                analyzeButton.textContent = "Analyze Job Match →";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

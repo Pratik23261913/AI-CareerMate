@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI CareerMate | Mock Interview</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fc;
+            color: #172554;
+            line-height: 1.6;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            color: #2563eb;
+            font-size: 23px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(28px, 4vw, 38px);
+            margin-bottom: 10px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            color: #172554;
+            font: inherit;
+            font-size: 15px;
+        }
+
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #bfdbfe;
+            border-color: #2563eb;
+        }
+
+        button {
+            padding: 13px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .primary-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        .secondary-button {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .secondary-button:hover:not(:disabled) {
+            background: #cbd5e1;
+        }
+
+        .danger-button {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .danger-button:hover:not(:disabled) {
+            background: #fecaca;
+        }
+
+        .full-button {
+            width: 100%;
+        }
+
+        .interview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .question-count {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .timer {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 9px 15px;
+            border-radius: 10px;
+            font-weight: 800;
+        }
+
+        .timer.warning {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.25s;
+        }
+
+        .question-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 22px;
+        }
+
+        .question-label {
+            color: #2563eb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .question-box h3 {
+            font-size: 21px;
+            line-height: 1.5;
+        }
+
+        .answer-textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .answer-help {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .feedback-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 22px;
+        }
+
+        .feedback-box h3 {
+            color: #166534;
+            margin-bottom: 8px;
+        }
+
+        .feedback-score {
+            font-size: 25px;
+            font-weight: 800;
+            color: #166534;
+            margin-bottom: 8px;
+        }
+
+        .feedback-box p {
+            color: #334155;
+        }
+
+        .feedback-box[hidden],
+        #interviewWorkspace[hidden],
+        #summarySection[hidden] {
+            display: none;
+        }
+
+        .summary-score {
+            text-align: center;
+            padding: 25px;
+            background: #eff6ff;
+            border-radius: 14px;
+            margin-bottom: 24px;
+        }
+
+        .summary-score strong {
+            display: block;
+            font-size: 42px;
+            color: #1d4ed8;
+            line-height: 1.3;
+        }
+
+        .summary-score span {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .stat span {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .review-list {
+            list-style: none;
+        }
+
+        .review-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .review-list li:last-child {
+            border-bottom: none;
+        }
+
+        .review-list strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .review-list p {
+            color: #64748b;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .disclaimer {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-grid,
+            .summary-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .question-box h3 {
+                font-size: 18px;
+            }
+
+            .button-row button {
+                flex: 1 1 100%;
+            }
+        }
+
+        .home-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 22px;
+            background: #ffffff;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .home-button span {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .home-button:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.18);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI CareerMate</a>
+        <a href="index.html" class="back-link">← Home</a>
+    </nav>
+
+    <main class="container">
+
+        <header class="page-heading">
+            <span class="badge">MOCK INTERVIEW</span>
+            <h1>Practice Before the Real Interview</h1>
+            <p>Build confidence, organize your answers, and prepare for technical interviews.</p>
+        </header>
+
+        <section class="card" id="setupSection">
+            <h2>Configure Your Interview</h2>
+
+            <form id="setupForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="role">Choose Developer Role</label>
+                        <select id="role" required>
+                            <option value="Python Developer">Python Developer</option>
+                            <option value="Java Developer">Java Developer</option>
+                            <option value="Backend Developer">Backend Developer</option>
+                            <option value="Web Developer">Web Developer</option>
+                            <option value="SQL Developer">SQL Developer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="difficulty">Difficulty Level</label>
+                        <select id="difficulty" required>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="questionCount">Number of Questions</label>
+                        <select id="questionCount" required>
+                            <option value="5">5 Questions</option>
+                            <option value="10">10 Questions</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="primary-button full-button">
+                    Start Mock Interview →
+                </button>
+
+            </form>
+        </section>
+
+        <section class="card" id="interviewWorkspace" hidden>
+
+            <div class="interview-header">
+                <div>
+                    <h2 id="interviewTitle">Technical Interview</h2>
+                    <p class="question-count" id="questionCounter"></p>
+                </div>
+
+                <div class="timer" id="timer" role="timer" aria-live="off">
+                    02:00
+                </div>
+            </div>
+
+            <div class="progress-track" role="progressbar" aria-label="Interview progress" aria-valuemin="0"
+                aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="question-box">
+                <div class="question-label">Interview Question</div>
+                <h3 id="questionText"></h3>
+            </div>
+
+            <form id="answerForm">
+
+                <div class="form-group">
+                    <label for="answer">Your Answer</label>
+
+                    <textarea id="answer" class="answer-textarea"
+                        placeholder="Write your answer here. Explain the concept and provide an example when possible..."
+                        required></textarea>
+
+                    <p class="answer-help">
+                        Tip: Explain the concept clearly and use examples where possible.
+                    </p>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="primary-button" id="submitAnswer">
+                        Submit Answer
+                    </button>
+
+                    <button type="button" class="secondary-button" id="skipQuestion">
+                        Skip Question
+                    </button>
+
+                    <button type="button" class="danger-button" id="endInterview">
+                        End Interview
+                    </button>
+                </div>
+
+            </form>
+
+            <section class="feedback-box" id="feedbackBox" hidden aria-live="polite">
+                <h3>Answer Feedback</h3>
+                <div class="feedback-score" id="feedbackScore"></div>
+                <p id="feedbackText"></p>
+
+                <div class="button-row">
+                    <button type="button" class="primary-button" id="nextQuestion">
+                        Next Question →
+                    </button>
+                </div>
+            </section>
+
+        </section>
+
+        <section class="card" id="summarySection" hidden>
+
+            <h2>Interview Performance Report</h2>
+
+            <div class="summary-score">
+                <strong id="averageScore">0/10</strong>
+                <span>Average answer quality score</span>
+            </div>
+
+            <div class="summary-stats">
+                <div class="stat">
+                    <strong id="answeredCount">0</strong>
+                    <span>Answered</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="skippedCount">0</strong>
+                    <span>Skipped</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="totalCount">0</strong>
+                    <span>Total Questions</span>
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 12px;">Question Review</h3>
+            <ul class="review-list" id="reviewList"></ul>
+
+            <p class="disclaimer">
+                This prototype uses rule-based answer checks. Its scores and feedback
+                are practice guidance, not a professional evaluation or a real AI
+                assessment. Your answers are processed in this page and are not sent
+                to the backend by this prototype.
+            </p>
+
+            <div class="button-row">
+                <button type="button" class="primary-button" id="restartInterview">
+                    Practice Again
+                </button>
+
+                <a href="index.html" class="home-button">
+                    <span>←</span> Back to Home
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        © <span id="year"></span> AI CareerMate · Analyze. Improve. Prepare. Succeed.
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+        const questionBank = {
+            "Python Developer": {
+                "Easy": [
+                    "What is Python, and what are its main advantages?",
+                    "What is the difference between a list and a tuple in Python?",
+                    "What are variables and data types in Python?",
+                    "What is the purpose of a for loop?",
+                    "What is a Python function?",
+                    "What is the difference between == and = in Python?",
+                    "What is a dictionary in Python?",
+                    "What is the purpose of if and else statements?",
+                    "What is exception handling in Python?",
+                    "What is the difference between a local and a global variable?"
+                ],
+                "Medium": [
+                    "Explain object-oriented programming in Python with an example.",
+                    "What is the difference between a list, tuple, set, and dictionary?",
+                    "What are decorators in Python?",
+                    "Explain exception handling using try, except, and finally.",
+                    "What is the difference between an iterator and a generator?",
+                    "What are *args and **kwargs?",
+                    "How does Python manage memory?",
+                    "What is the difference between shallow copy and deep copy?",
+                    "How would you read and write a file in Python?",
+                    "What are lambda functions, and when would you use them?"
+                ],
+                "Hard": [
+                    "Explain Python's Global Interpreter Lock and its implications.",
+                    "How would you optimize a slow Python application?",
+                    "Explain generators and how they can reduce memory usage.",
+                    "How would you design a Python application with multiple modules?",
+                    "Explain asynchronous programming with async and await.",
+                    "How would you handle errors in a production Python service?",
+                    "What are Python context managers, and how do they work?",
+                    "How would you test a complex Python application?",
+                    "Explain common causes of memory leaks in Python applications.",
+                    "How would you profile and debug a performance bottleneck?"
+                ]
+            },
+
+            "Java Developer": {
+                "Easy": [
+                    "What is Java, and what are its main features?",
+                    "What is the difference between JDK, JRE, and JVM?",
+                    "What is a class and an object in Java?",
+                    "What are primitive data types in Java?",
+                    "What is the difference between == and equals()?",
+                    "What is a constructor?",
+                    "What is inheritance in Java?",
+                    "What is method overloading?",
+                    "What is an interface in Java?",
+                    "What is exception handling?"
+                ],
+                "Medium": [
+                    "Explain the four pillars of object-oriented programming.",
+                    "What is the difference between an abstract class and an interface?",
+                    "Explain method overriding with an example.",
+                    "What is the Java Collections Framework?",
+                    "What is the difference between ArrayList and LinkedList?",
+                    "Explain checked and unchecked exceptions.",
+                    "What is multithreading in Java?",
+                    "What is the difference between String, StringBuilder, and StringBuffer?",
+                    "How does a HashMap work at a high level?",
+                    "What is encapsulation, and why is it useful?"
+                ],
+                "Hard": [
+                    "Explain the Java memory model at a high level.",
+                    "How would you investigate a Java application's memory leak?",
+                    "Explain thread synchronization and race conditions.",
+                    "How does garbage collection work in Java?",
+                    "How would you design a thread-safe service?",
+                    "What are the differences between processes and threads in Java applications?",
+                    "How would you improve the performance of a Java application?",
+                    "Explain deadlock and methods to prevent it.",
+                    "How would you design a maintainable Java backend?",
+                    "What is dependency injection, and why is it useful?"
+                ]
+            },
+
+            "Backend Developer": {
+                "Easy": [
+                    "What is backend development?",
+                    "What is an API?",
+                    "What is the difference between frontend and backend?",
+                    "What is a database?",
+                    "What is HTTP?",
+                    "What is the difference between GET and POST?",
+                    "What is JSON?",
+                    "Why is input validation important?",
+                    "What is authentication?",
+                    "What is the purpose of a server?"
+                ],
+                "Medium": [
+                    "Explain REST APIs and their common HTTP methods.",
+                    "What is the difference between authentication and authorization?",
+                    "How would you design an API error response?",
+                    "What is database normalization?",
+                    "What is the purpose of database indexing?",
+                    "How would you secure an API?",
+                    "What is the difference between SQL and NoSQL databases?",
+                    "How does session-based authentication work?",
+                    "What is caching, and when is it useful?",
+                    "How would you debug a slow API endpoint?"
+                ],
+                "Hard": [
+                    "How would you design a scalable backend for an ordering system?",
+                    "How would you prevent duplicate payments or orders?",
+                    "Explain database transactions and ACID properties.",
+                    "How would you investigate high API latency?",
+                    "How would you design role-based access control?",
+                    "What are rate limiting and throttling?",
+                    "How would you handle concurrent updates to the same record?",
+                    "Explain monolithic and microservice architectures.",
+                    "How would you design reliable background jobs?",
+                    "How would you monitor a production backend service?"
+                ]
+            },
+
+            "Web Developer": {
+                "Easy": [
+                    "What is the difference between HTML, CSS, and JavaScript?",
+                    "What are HTML semantic elements?",
+                    "What is the CSS box model?",
+                    "What is the DOM?",
+                    "What is responsive web design?",
+                    "What is the purpose of a hyperlink?",
+                    "What is the difference between class and id in CSS?",
+                    "What is a JavaScript variable?",
+                    "What is the purpose of a form?",
+                    "What is the difference between margin and padding?"
+                ],
+                "Medium": [
+                    "Explain event bubbling in JavaScript.",
+                    "What is the difference between let, const, and var?",
+                    "How does async/await work in JavaScript?",
+                    "What is the difference between Flexbox and CSS Grid?",
+                    "How would you validate a web form?",
+                    "What is the difference between localStorage and sessionStorage?",
+                    "What is cross-origin resource sharing?",
+                    "How would you improve web page performance?",
+                    "What is the purpose of semantic HTML?",
+                    "How would you make a website accessible?"
+                ],
+                "Hard": [
+                    "How would you investigate a slow-loading website?",
+                    "Explain common web security risks and their prevention.",
+                    "How would you structure a large frontend application?",
+                    "What causes memory leaks in browser JavaScript?",
+                    "How would you handle API errors in a frontend application?",
+                    "Explain the critical rendering path.",
+                    "How would you design an accessible interactive form?",
+                    "How would you manage state in a complex interface?",
+                    "What is content security policy?",
+                    "How would you test a responsive website across devices?"
+                ]
+            },
+
+            "SQL Developer": {
+                "Easy": [
+                    "What is SQL?",
+                    "What is a primary key?",
+                    "What is a foreign key?",
+                    "What is the difference between WHERE and ORDER BY?",
+                    "What is the purpose of SELECT?",
+                    "What is the difference between DELETE and DROP?",
+                    "What is a database table?",
+                    "What does GROUP BY do?",
+                    "What is NULL in SQL?",
+                    "What is the purpose of the INSERT statement?"
+                ],
+                "Medium": [
+                    "Explain the different types of SQL joins.",
+                    "What is the difference between WHERE and HAVING?",
+                    "What is database normalization?",
+                    "What is an index, and what are its trade-offs?",
+                    "Explain aggregate functions in SQL.",
+                    "What is a subquery?",
+                    "What is the difference between UNION and UNION ALL?",
+                    "What are transactions in SQL?",
+                    "What is the difference between CHAR and VARCHAR?",
+                    "How would you find duplicate records in a table?"
+                ],
+                "Hard": [
+                    "How would you investigate a slow SQL query?",
+                    "Explain the ACID properties of database transactions.",
+                    "How do composite indexes work?",
+                    "What are transaction isolation levels?",
+                    "How would you optimize a query involving several joins?",
+                    "Explain database deadlocks and how to reduce them.",
+                    "How would you paginate a large dataset efficiently?",
+                    "What is the difference between a clustered and nonclustered index?",
+                    "How would you safely migrate a large production table?",
+                    "How would you identify and resolve database bottlenecks?"
+                ]
+            }
+        };
+
+        const setupSection = document.getElementById("setupSection");
+        const setupForm = document.getElementById("setupForm");
+        const workspace = document.getElementById("interviewWorkspace");
+        const summarySection = document.getElementById("summarySection");
+
+        const roleSelect = document.getElementById("role");
+        const difficultySelect = document.getElementById("difficulty");
+        const questionCountSelect = document.getElementById("questionCount");
+
+        const timerElement = document.getElementById("timer");
+        const questionCounter = document.getElementById("questionCounter");
+        const questionText = document.getElementById("questionText");
+        const answerInput = document.getElementById("answer");
+
+        const answerForm = document.getElementById("answerForm");
+        const submitAnswerButton = document.getElementById("submitAnswer");
+        const skipButton = document.getElementById("skipQuestion");
+        const endButton = document.getElementById("endInterview");
+        const nextButton = document.getElementById("nextQuestion");
+
+        const feedbackBox = document.getElementById("feedbackBox");
+        const feedbackScore = document.getElementById("feedbackScore");
+        const feedbackText = document.getElementById("feedbackText");
+
+        const progressBar = document.getElementById("progressBar");
+        const progressTrack = document.getElementById("progressTrack");
+
+        let questions = [];
+        let currentIndex = 0;
+        let secondsRemaining = 120;
+        let timerInterval = null;
+        let feedbackVisible = false;
+        let interviewFinished = false;
+        let review = [];
+        let currentRole = "";
+        let currentDifficulty = "";
+
+        function stopTimer() {
+            if (timerInterval !== null) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function startTimer() {
+            stopTimer();
+
+            secondsRemaining = 120;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                secondsRemaining--;
+                updateTimerDisplay();
+
+                if (secondsRemaining <= 0) {
+                    stopTimer();
+
+                    if (!feedbackVisible && !interviewFinished) {
+                        submitAnswer(true);
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(secondsRemaining / 60);
+            const seconds = secondsRemaining % 60;
+
+            timerElement.textContent =
+                String(minutes).padStart(2, "0") + ":" +
+                String(seconds).padStart(2, "0");
+
+            timerElement.classList.toggle("warning", secondsRemaining <= 30);
+        }
+
+        function renderQuestion() {
+            if (currentIndex >= questions.length) {
+                finishInterview();
+                return;
+            }
+
+            feedbackVisible = false;
+            feedbackBox.hidden = true;
+            answerForm.hidden = false;
+            answerInput.disabled = false;
+            submitAnswerButton.disabled = false;
+            skipButton.disabled = false;
+
+            answerInput.value = "";
+
+            questionText.textContent = questions[currentIndex];
+
+            questionCounter.textContent =
+                "Question " + (currentIndex + 1) + " of " + questions.length;
+
+            const progress = (currentIndex / questions.length) * 100;
+
+            progressBar.style.width = progress + "%";
+            progressTrack.setAttribute("aria-valuenow", String(Math.round(progress)));
+
+            startTimer();
+            answerInput.focus();
+        }
+
+        function evaluateAnswer(answer) {
+            const text = answer.trim();
+            const words = text.split(/\s+/).filter(Boolean);
+            const lower = text.toLowerCase();
+
+            const concepts = [
+                "because", "example", "for example", "such as",
+                "therefore", "however", "first", "second",
+                "process", "system", "data", "result",
+                "use", "used", "helps", "allows"
+            ];
+
+            const conceptCount = concepts.filter(word => lower.includes(word)).length;
+
+            let score = 0;
+            const feedback = [];
+
+            if (words.length >= 50) {
+                score += 4;
+            } else if (words.length >= 25) {
+                score += 3;
+            } else if (words.length >= 10) {
+                score += 2;
+            } else if (words.length > 0) {
+                score += 1;
+            } else {
+                feedback.push("You did not provide an answer.");
+            }
+
+            if (conceptCount >= 3) {
+                score += 3;
+            } else if (conceptCount >= 1) {
+                score += 2;
+            } else if (words.length > 0) {
+                score += 1;
+            }
+
+            if (/[.!?]/.test(text)) {
+                score += 1;
+            } else if (words.length > 0) {
+                feedback.push("Use complete sentences with clear punctuation.");
+            }
+
+            if (words.length >= 20) {
+                score += 1;
+            } else if (words.length > 0) {
+                feedback.push("Add more explanation to make your answer clearer.");
+            }
+
+            if (/\b(for example|such as|for instance)\b/i.test(text)) {
+                score += 1;
+            } else if (words.length > 0) {
+                feedback.push("Include a practical example where appropriate.");
+            }
+
+            score = Math.min(10, score);
+
+            if (words.length >= 10 && conceptCount >= 2) {
+                feedback.unshift("Your answer includes some explanation. Keep it structured and relevant.");
+            }
+
+            if (words.length === 0) {
+                score = 0;
+            }
+
+            return {
+                score,
+                wordCount: words.length,
+                feedback: feedback.length
+                    ? feedback.join(" ")
+                    : "Good effort. Keep practicing clear, structured technical explanations."
+            };
+        }
+
+        function submitAnswer(autoSubmit = false) {
+            if (feedbackVisible || interviewFinished) {
+                return;
+            }
+
+            stopTimer();
+
+            const answer = answerInput.value.trim();
+            const evaluation = evaluateAnswer(answer);
+
+            review.push({
+                question: questions[currentIndex],
+                answer: answer || "(No answer provided)",
+                score: evaluation.score,
+                feedback: evaluation.feedback,
+                skipped: false
+            });
+
+            feedbackVisible = true;
+
+            answerInput.disabled = true;
+            submitAnswerButton.disabled = true;
+            skipButton.disabled = true;
+            answerForm.hidden = true;
+
+            feedbackBox.hidden = false;
+
+            feedbackScore.textContent = evaluation.score + " / 10";
+            feedbackText.textContent = autoSubmit && secondsRemaining <= 0
+                ? "Time is up. " + evaluation.feedback
+                : evaluation.feedback;
+
+            if (currentIndex === questions.length - 1) {
+                nextButton.textContent = "View Final Report";
+            } else {
+                nextButton.textContent = "Next Question →";
+            }
+        }
+
+        function skipQuestion() {
+            if (feedbackVisible || interviewFinished) {
+                return;
+            }
+
+            stopTimer();
+
+            review.push({
+                question: questions[currentIndex],
+                answer: "(Skipped)",
+                score: 0,
+                feedback: "Review this question and practice answering it later.",
+                skipped: true
+            });
+
+            currentIndex++;
+            renderQuestion();
+        }
+
+        function finishInterview() {
+            if (interviewFinished) {
+                return;
+            }
+
+            interviewFinished = true;
+            stopTimer();
+
+            workspace.hidden = true;
+            setupSection.hidden = true;
+            summarySection.hidden = false;
+
+            const answered = review.filter(item => !item.skipped);
+            const skipped = review.filter(item => item.skipped);
+
+            const totalScore = answered.reduce(
+                (sum, item) => sum + item.score, 0
+            );
+
+            const average = answered.length
+                ? totalScore / answered.length
+                : 0;
+
+            document.getElementById("averageScore").textContent =
+                average.toFixed(1) + "/10";
+
+            document.getElementById("answeredCount").textContent =
+                answered.length;
+
+            document.getElementById("skippedCount").textContent =
+                skipped.length;
+
+            document.getElementById("totalCount").textContent =
+                review.length;
+
+            const reviewList = document.getElementById("reviewList");
+            reviewList.replaceChildren();
+
+            review.forEach((item, index) => {
+                const li = document.createElement("li");
+
+                const title = document.createElement("strong");
+                title.textContent =
+                    (index + 1) + ". " + item.question;
+
+                const score = document.createElement("p");
+                score.textContent = item.skipped
+                    ? "Skipped"
+                    : "Practice score: " + item.score + "/10";
+
+                const answer = document.createElement("p");
+                answer.textContent = "Your answer: " + item.answer;
+
+                const feedback = document.createElement("p");
+                feedback.textContent = "Feedback: " + item.feedback;
+
+                li.append(title, score, answer, feedback);
+                reviewList.appendChild(li);
+            });
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        setupForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            currentRole = roleSelect.value;
+            currentDifficulty = difficultySelect.value;
+
+            const availableQuestions =
+                questionBank[currentRole][currentDifficulty];
+
+            const count = Number(questionCountSelect.value);
+
+            questions = availableQuestions.slice(0, count);
+
+            currentIndex = 0;
+            review = [];
+            interviewFinished = false;
+
+            document.getElementById("interviewTitle").textContent =
+                currentRole + " · " + currentDifficulty;
+
+            setupSection.hidden = true;
+            summarySection.hidden = true;
+            workspace.hidden = false;
+
+            renderQuestion();
+        });
+
+        answerForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            submitAnswer(false);
+        });
+
+        skipButton.addEventListener("click", skipQuestion);
+
+        endButton.addEventListener("click", function () {
+            if (interviewFinished) {
+                return;
+            }
+
+            if (!feedbackVisible && currentIndex < questions.length) {
+                const answer = answerInput.value.trim();
+
+                if (answer) {
+                    const evaluation = evaluateAnswer(answer);
+
+                    review.push({
+                        question: questions[currentIndex],
+                        answer,
+                        score: evaluation.score,
+                        feedback: evaluation.feedback,
+                        skipped: false
+                    });
+                } else {
+                    review.push({
+                        question: questions[currentIndex],
+                        answer: "(Ended before answering)",
+                        score: 0,
+                        feedback: "This question was not answered.",
+                        skipped: true
+                    });
+                }
+            }
+
+            finishInterview();
+        });
+
+        nextButton.addEventListener("click", function () {
+            if (!feedbackVisible) {
+                return;
+            }
+
+            currentIndex++;
+            renderQuestion();
+        });
+
+        document.getElementById("restartInterview").addEventListener(
+            "click",
+            function () {
+                stopTimer();
+
+                summarySection.hidden = true;
+                workspace.hidden = true;
+                setupSection.hidden = false;
+
+                answerInput.value = "";
+                feedbackBox.hidden = true;
+
+                currentIndex = 0;
+                questions = [];
+                review = [];
+                feedbackVisible = false;
+                interviewFinished = false;
+
+                timerElement.textContent = "02:00";
+                timerElement.classList.remove("warning");
+
+                progressBar.style.width = "0%";
+                progressTrack.setAttribute("aria-valuenow", "0");
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        );
+    </script>
+
+</body>
+
+</html>

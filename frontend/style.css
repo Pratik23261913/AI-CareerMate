@@ -1,0 +1,144 @@
+/* General Styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    color: #1e293b;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 7%;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Website Logo */
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* Navigation Links */
+nav a {
+    text-decoration: none;
+    color: #334155;
+    margin-left: 25px;
+    font-size: 15px;
+}
+
+nav a:hover {
+    color: #2563eb;
+}
+
+/* Main Section */
+main {
+    text-align: center;
+    padding: 70px 20px;
+}
+
+/* Main Heading */
+h1 {
+    color: #2563eb;
+    font-size: 42px;
+}
+
+/* Section Heading */
+h2 {
+    font-size: 28px;
+    margin-top: 40px;
+}
+
+/* Paragraphs */
+p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+/* Introductory Text */
+.intro {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* Feature Cards Container */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 50px auto;
+    max-width: 1000px;
+}
+
+/* Individual Feature Card */
+.card {
+    background-color: white;
+    width: 350px;
+    padding: 30px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card Icon */
+.icon {
+    font-size: 45px;
+}
+
+/* Card Heading */
+.card h3 {
+    color: #2563eb;
+    font-size: 23px;
+}
+
+/* Card Paragraph */
+.card p {
+    font-size: 16px;
+    color: #64748b;
+}
+
+/* Card Button */
+.card button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.card button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Mobile Layout */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 5px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .card {
+        width: 100%;
+    }
+}

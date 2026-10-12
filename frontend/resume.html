@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI CareerMate | Resume Analysis</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fc;
+            color: #172554;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: white;
+            border-bottom: 1px solid #e5eaf3;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        .page-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 45px auto;
+        }
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 12px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .main-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.05);
+        }
+
+        .upload-area {
+            border: 2px dashed #93b4f8;
+            background: #f8fbff;
+            border-radius: 16px;
+            padding: 35px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .upload-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 18px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .upload-area h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 12px;
+            border: 1px solid #dbe3ef;
+            border-radius: 10px;
+            background: white;
+            color: #334155;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .privacy-note {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        #result {
+            margin-top: 25px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        #result:empty {
+            display: none;
+        }
+
+        #result h2,
+        #result h3 {
+            margin: 18px 0 10px;
+        }
+
+        #result ul {
+            padding-left: 22px;
+            margin: 10px 0;
+        }
+
+        #result li {
+            margin-bottom: 7px;
+        }
+
+        .result-error {
+            color: #b91c1c;
+            background: #fef2f2;
+            padding: 14px;
+            border-radius: 10px;
+        }
+
+        .result-success {
+            color: #166534;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 28px;
+        }
+
+        .step {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 10px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .step h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                padding: 18px 5%;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .page-container {
+                margin: 30px auto;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-area {
+                padding: 25px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">AI CareerMate</a>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </nav>
+
+    <main class="page-container">
+
+        <header class="page-heading">
+            <span class="badge">RESUME ANALYSIS</span>
+
+            <h1>Make Your Resume Stronger</h1>
+
+            <p>
+                Upload your resume to identify skills, review resume completeness,
+                and discover areas you may need to improve.
+            </p>
+        </header>
+
+        <section class="main-card">
+
+            <form id="resumeForm">
+
+                <div class="upload-area">
+
+                    <div class="upload-icon">📄</div>
+
+                    <h2>Upload Your Resume</h2>
+
+                    <p>
+                        Select your resume in PDF format from your computer.
+                        For this version, PDF files are supported.
+                    </p>
+
+                    <input type="file" id="resumeFile" accept=".pdf,application/pdf" required>
+
+                </div>
+
+                <button type="submit" id="analyzeButton">
+                    Analyze My Resume →
+                </button>
+
+                <p class="privacy-note">
+                    Your resume is sent to your local AI CareerMate backend
+                    for analysis. Avoid uploading documents containing
+                    unnecessary sensitive personal information.
+                </p>
+
+            </form>
+
+            <div id="result" aria-live="polite"></div>
+
+        </section>
+
+        <section class="steps">
+
+            <article class="step">
+                <div class="step-number">1</div>
+                <h3>Upload</h3>
+                <p>Select your resume as a PDF file.</p>
+            </article>
+
+            <article class="step">
+                <div class="step-number">2</div>
+                <h3>Analyze</h3>
+                <p>Review detected skills and resume completeness.</p>
+            </article>
+
+            <article class="step">
+                <div class="step-number">3</div>
+                <h3>Improve</h3>
+                <p>Review suggestions and continue to Job Match Analysis.</p>
+            </article>
+
+        </section>
+
+    </main>
+
+    <footer>
+        © <span id="year"></span> AI CareerMate · Analyze. Improve. Prepare. Succeed.
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
